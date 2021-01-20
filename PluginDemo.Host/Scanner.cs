@@ -20,18 +20,23 @@ namespace PluginDemo.Host
 
         private void GetAllPlugins(AppDomain domain)
         {
-            var pluginType = typeof (IPlugin);
+            var pluginType = typeof(IPlugin);
 
             var types = domain.GetAssemblies()
                               .SelectMany(a => a.GetTypes())
                               .Where(t => t.GetInterface(pluginType.Name) != null);
 
-            var ctors = types.Select(t => t.GetConstructor(new Type[] {}))
+            var ctors = types.Select(t => t.GetConstructor(new Type[] { }))
                              .Where(c => c != null);
 
             _plugins.Clear();
             _plugins.AddRange(ctors.Select(c => c.Invoke(null))
-                                   .Cast<IPlugin>());
+                                   .Cast<IPlugin>().Select(item => {
+                                       if (item is APlugin)
+                                       {
+                                           ((APlugin)item).ILog = s => { Console.WriteLine(s); };
+                                       }
+                                       return item; }));
         }
 
         public void Setup()

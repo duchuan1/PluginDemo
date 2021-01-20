@@ -42,6 +42,15 @@ namespace PluginDemo.Host
             _scanner.DoWork();
         }
 
+        public void UnLoad()
+        {
+            if (_domain != null)
+            {
+                _scanner.Teardown();
+                AppDomain.Unload(_domain);
+                _domain = null;
+            }
+        }
         public IPlugin ShowCrossDomainPollutionExceptions()
         {
             return _scanner.ShowCrossDomainPollutionExceptions();
