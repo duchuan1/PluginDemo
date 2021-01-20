@@ -17,7 +17,7 @@ namespace PluginDemo.Host
            Directory.Delete("plugins", true);
 
             manager.DoWork();
-            manager.ShowCrossDomainPolutionExceptions();
+            manager.ShowCrossDomainPollutionExceptions();
 
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
